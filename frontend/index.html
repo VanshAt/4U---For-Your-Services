@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>4U - For Your Services</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+  <link rel="stylesheet" href="css/custom.css">
+</head>
+<body class="bg-gradient-to-b from-slate-50 to-white text-slate-800">
+  <header class="bg-white/90 backdrop-blur sticky top-0 z-40 shadow">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-indigo-600 to-pink-500 text-white flex items-center justify-center font-bold">4U</div>
+        <div>
+          <div class="font-semibold text-lg">4U - For Your Services</div>
+          <div class="text-xs text-slate-500">Trusted technicians • Nagpur</div>
+        </div>
+      </a>
+      <nav class="flex items-center gap-4">
+        <a href="index.html" class="text-slate-700 hover:text-indigo-600">Home</a>
+        <a href="services.html" class="text-slate-700 hover:text-indigo-600">Services</a>
+        <a href="booking.html" class="px-4 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700">Book Now</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 mt-10">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+      <div data-aos="fade-right">
+        <h1 class="text-4xl md:text-5xl font-extrabold leading-tight">
+          Local appliance services — <span class="text-indigo-600">fast, verified & reliable</span>
+        </h1>
+        <p class="text-slate-600 max-w-xl mt-4">
+          Book trusted technicians for AC, Fridge, Washing Machine, Chimney & more. We connect you with nearby service-centres across Nagpur.
+        </p>
+
+        <div class="flex gap-3 mt-6">
+          <a href="booking.html" class="inline-flex items-center gap-3 bg-indigo-600 text-white px-5 py-3 rounded-lg shadow hover:bg-indigo-700">
+            Book Service
+          </a>
+          <a href="#services" class="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-slate-200 hover:bg-slate-100">
+            View Services
+          </a>
+        </div>
+
+        <div class="mt-6 flex items-center gap-4 text-sm text-slate-500">
+          <div class="flex items-center gap-2"><span class="font-medium text-slate-700">4.9</span> ★ (1.8k reviews)</div>
+          <div>•</div>
+          <div>Serving all over Nagpur</div>
+        </div>
+      </div>
+
+      <div data-aos="fade-left" class="relative">
+        <div class="rounded-2xl overflow-hidden shadow-2xl">
+          <img src="images/hero.jpg" alt="appliance" class="w-full h-72 object-cover">
+        </div>
+
+        <div class="absolute -bottom-6 left-6 bg-white rounded-xl p-4 shadow-md w-80 border">
+          <div class="text-xs text-slate-500">Popular Service</div>
+          <div class="font-semibold">AC Deep Clean - <span class="text-indigo-600">Starting ₹499</span></div>
+          <div class="mt-2 text-sm text-slate-600">Filter wash, coil clean, drain & quick check</div>
+          <div class="mt-3 flex justify-between items-center">
+            <a href="booking.html" class="text-sm bg-indigo-600 text-white px-3 py-2 rounded-md">Book Now</a>
+            <a href="services.html" class="text-sm text-slate-500">Know more →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section id="services" class="mt-16">
+      <h2 class="text-2xl font-bold">Our Services</h2>
+      <p class="text-slate-600">Popular services — click Book to request a visit</p>
+      <div id="services-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6"></div>
+    </section>
+
+  </main>
+
+  <footer class="mt-16 bg-white border-t">
+    <div class="max-w-6xl mx-auto px-6 py-8 flex flex-col md:flex-row justify-between items-start gap-6">
+      <div>
+        <div class="font-bold">4U - For Your Services</div>
+        <div class="text-sm text-slate-500 mt-2">Trusted technicians across Nagpur</div>
+      </div>
+      <div class="text-sm text-slate-500">
+        © <span id="year"></span> 4U — All rights reserved
+      </div>
+    </div>
+  </footer>
+
+<script>
+AOS.init({duration:700, once:true});
+document.getElementById('year').textContent=new Date().getFullYear();
+</script>
+
+<script src="js/main.js"></script>
+</body>
+</html>

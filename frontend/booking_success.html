@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Success • 4U</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+<link rel="stylesheet" href="css/custom.css">
+</head>
+<body class="bg-gradient-to-b from-slate-50 to-white min-h-screen flex items-center justify-center">
+  <div class="max-w-3xl w-full p-6">
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+      <div class="grid grid-cols-1 md:grid-cols-2">
+        <div class="p-8 flex flex-col items-center justify-center">
+          <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_jbrw3hcz.json"  background="transparent"  speed="1"  style="width:240px; height:240px;"  loop  autoplay></lottie-player>
+          <h2 class="mt-4 text-2xl font-extrabold text-slate-800">Booking Confirmed!</h2>
+          <p class="mt-2 text-slate-500 text-center">A technician will contact you soon. Keep your phone ready.</p>
+          <div id="quick-actions" class="mt-6 flex gap-3">
+            <a id="wa-cta" target="_blank" class="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg shadow">Message Admin</a>
+            <a id="call-cta" href="#" class="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-lg shadow">Call Admin</a>
+          </div>
+        </div>
+        <div class="p-8 border-l">
+          <div class="text-sm text-slate-500">Reference ID</div>
+          <div id="ref-id" class="text-2xl font-bold text-slate-800 mt-1">#12345</div>
+          <div class="mt-6 grid grid-cols-1 gap-3">
+            <div><div class="text-xs text-slate-500">Name</div><div id="bk-name" class="font-medium text-slate-700"></div></div>
+            <div><div class="text-xs text-slate-500">Phone</div><div id="bk-phone" class="font-medium text-slate-700"></div></div>
+            <div><div class="text-xs text-slate-500">Service</div><div id="bk-service" class="font-medium text-slate-700"></div></div>
+            <div><div class="text-xs text-slate-500">Address</div><div id="bk-address" class="font-medium text-slate-700"></div></div>
+            <div><div class="text-xs text-slate-500">Status</div><div id="bk-status" class="text-sm font-semibold text-amber-600">Received</div></div>
+          </div>
+          <div class="mt-6 flex gap-3">
+            <button id="download-receipt" class="flex-1 bg-indigo-600 text-white px-4 py-2 rounded-lg">Download Receipt</button>
+            <a href="index.html" class="flex-1 text-center border border-slate-200 px-4 py-2 rounded-lg">Back to Home</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+function qs(name){ const url=new URL(window.location.href); return url.searchParams.get(name)||'';}
+const id = qs('id') || 'N/A';
+const name = decodeURIComponent(qs('name')||'');
+const phone = decodeURIComponent(qs('phone')||'');
+const service = decodeURIComponent(qs('service')||'');
+const address = decodeURIComponent(qs('address')||'');
+const wa = decodeURIComponent(qs('wa')||'');
+document.getElementById('ref-id').textContent = id;
+document.getElementById('bk-name').textContent = name || '—';
+document.getElementById('bk-phone').textContent = phone || '—';
+document.getElementById('bk-service').textContent = service || '—';
+document.getElementById('bk-address').textContent = address || '—';
+document.getElementById('bk-status').textContent = 'Received';
+const waBtn = document.getElementById('wa-cta');
+if(wa){ waBtn.href = wa; } else { waBtn.href = 'https://wa.me/91' + (localStorage.getItem('admin_wh') || '9823125293'); }
+document.getElementById('call-cta').href = 'tel:' + (localStorage.getItem('admin_phone') || '9823125293');
+document.getElementById('download-receipt').addEventListener('click', ()=>{ const blob=new Blob([`Booking Ref: ${id}
+Name: ${name}
+Phone: ${phone}
+Service: ${service}
+Address: ${address}
+`],{type:'text/plain'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=`booking_${id}.txt`; a.click(); URL.revokeObjectURL(url); });
+</script>
+</body>
+</html>

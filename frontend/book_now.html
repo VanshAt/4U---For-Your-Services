@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Book Now • 4U</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/custom.css">
+</head>
+<body class="bg-gradient-to-b from-blue-50 to-white min-h-screen flex items-center justify-center">
+  <div class="max-w-2xl w-full bg-white rounded-3xl shadow-xl p-8">
+    <div class="flex items-center justify-between">
+      <h2 id="service-title" class="text-2xl font-bold">Book Service</h2>
+      <div class="text-sm text-slate-500" id="service-price"></div>
+    </div>
+    <p class="text-slate-600 mt-2">Fill details and our technician will contact you.</p>
+
+    <form id="bookForm" class="mt-6 grid gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <input id="name" class="input" placeholder="Your name" required>
+        <input id="phone" class="input" placeholder="Phone" required>
+      </div>
+      <textarea id="address" class="input" placeholder="Full address" rows="3" required></textarea>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <input id="pincode" class="input" placeholder="Pincode" required>
+        <select id="service_select" class="input"></select>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button class="bg-indigo-600 text-white px-5 py-3 rounded-xl">Confirm Booking</button>
+        <div id="bookResult" class="text-sm text-slate-600"></div>
+      </div>
+    </form>
+  </div>
+
+<script>
+const url = new URL(window.location.href);
+const service_id = url.searchParams.get('service');
+const title = decodeURIComponent(url.searchParams.get('title')||'');
+document.getElementById('service-title').textContent = title || 'Book Service';
+
+async function loadServices(){
+  const res = await fetch('/api/services');
+  const j = await res.json();
+  if(!j.ok) return;
+  const sel = document.getElementById('service_select');
+  j.services.forEach(s=>{
+    const opt = document.createElement('option'); opt.value = s.id; opt.textContent = s.title + ' — ' + s.starting_price;
+    sel.appendChild(opt);
+    if(String(s.id)===service_id) sel.value = s.id;
+  });
+}
+loadServices();
+
+document.getElementById('bookForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const data = {
+    name: document.getElementById('name').value.trim(),
+    phone: document.getElementById('phone').value.trim(),
+    address: document.getElementById('address').value.trim(),
+    pincode: document.getElementById('pincode').value.trim(),
+    service_id: Number(document.getElementById('service_select').value)
+  };
+  const res = await fetch('/api/book', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)});
+  const j = await res.json();
+  if(j.ok){
+    const q = new URLSearchParams({
+      id: j.id,
+      name: data.name,
+      phone: data.phone,
+      service: document.getElementById('service_select').selectedOptions[0].text,
+      address: data.address,
+      wa: j.wa_link || ''
+    }).toString();
+    window.location.href = 'booking_success.html?' + q;
+  } else {
+    document.getElementById('bookResult').textContent = 'Error: '+(j.error||'unknown');
+  }
+});
+</script>
+</body>
+</html>
