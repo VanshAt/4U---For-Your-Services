@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory,render_template
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import sqlite3, os, uuid, datetime
 from pathlib import Path
@@ -61,18 +61,29 @@ def init_db():
     conn.commit()
     conn.close()
 
-app = Flask(__name__, template_folder="frontend", static_folder="frontend")
+# ------------------------------------------------
+# FLASK APP CONFIG
+# ------------------------------------------------
+
+app = Flask(__name__, static_folder="frontend", template_folder="frontend")
 CORS(app)
 
 init_db()
-@app.route('/')
-def home():
-    return render_template("index.html")
 
+# --------------------------------------------
+# SERVE FRONTEND (CORRECTED)
+# --------------------------------------------
 @app.route("/")
 def home():
     return send_from_directory(app.static_folder, "index.html")
 
+@app.route("/<path:path>", methods=["GET"])
+def static_proxy(path):
+    return send_from_directory(app.static_folder, path)
+
+# --------------------------------------------
+# API ROUTES
+# --------------------------------------------
 @app.route("/api/services", methods=["GET"])
 def services():
     conn = get_conn()
@@ -80,7 +91,6 @@ def services():
         "SELECT id, key, title, description, starting_price FROM services ORDER BY id"
     ).fetchall()
     conn.close()
-
     return jsonify({"ok": True, "services": [dict(r) for r in rows]})
 
 @app.route("/api/book", methods=["POST"])
@@ -114,11 +124,9 @@ def create_booking():
 
     return jsonify({"ok": True, "id": bid, "wa_link": wa_link})
 
-@app.route("/<path:path>", methods=["GET"])
-def static_proxy(path):
-    return send_from_directory(app.static_folder, path)
-
+# --------------------------------------------
+# START SERVER
+# --------------------------------------------
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 5000))
-    print(f"Server running at http://127.0.0.1:{port}")
-    app.run(host="0.0.0.0", port=port, debug=True)
+    app.run(host="0.0.0.0", port=port)
