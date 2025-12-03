@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory,render_template
 from flask_cors import CORS
 import sqlite3, os, uuid, datetime
 from pathlib import Path
@@ -61,10 +61,13 @@ def init_db():
     conn.commit()
     conn.close()
 
-app = Flask(__name__, static_folder="../frontend", static_url_path="/")
+app = Flask(__name__, template_folder="frontend", static_folder="frontend")
 CORS(app)
 
 init_db()
+@app.route('/')
+def home():
+    return render_template("index.html")
 
 @app.route("/")
 def home():
